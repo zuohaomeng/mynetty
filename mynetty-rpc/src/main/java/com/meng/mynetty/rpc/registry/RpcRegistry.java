@@ -52,7 +52,9 @@ public class RpcRegistry {
                             pipeline.addLast(new RegistryHandler());
                         }
                     })
+                    //最大128个客户端连接
                     .option(ChannelOption.SO_BACKLOG, 128)
+                    //TCP会主动探测空闲连接的有效性，默认心跳间隔7200是，即2h.
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
             ChannelFuture future = bootstrap.bind(port).sync();
             System.out.println("netty is listen at" + port);

@@ -3,6 +3,9 @@ package com.meng.mynetty.rpc.consumer;
 import com.meng.mynetty.rpc.api.IRpcHiService;
 import com.meng.mynetty.rpc.api.IRpcService;
 import com.meng.mynetty.rpc.consumer.proxy.RpcProxy;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.buffer.Unpooled;
 
 /**
  * @author ZuoHao
@@ -19,6 +22,5 @@ public class RpcConsumer {
         System.out.println("8 - 2 = " + service.add(8, 2));
         System.out.println("8 * 2 = " + service.add(8, 2));
         System.out.println("8 / 2 = " + service.add(8, 2));
-
     }
 }
