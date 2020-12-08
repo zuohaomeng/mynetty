@@ -50,6 +50,7 @@ public class RpcRegistry {
                             pipeline.addLast("encoder", new ObjectEncoder());
                             pipeline.addLast("decoder", new ObjectDecoder(Integer.MAX_VALUE, ClassResolvers.cacheDisabled(null)));
                             pipeline.addLast(new RegistryHandler());
+                            pipeline.addLast(new SecondHandler());
                         }
                     })
                     //最大128个客户端连接

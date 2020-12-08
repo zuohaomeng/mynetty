@@ -3,6 +3,8 @@ package com.meng.mynetty.rpc.registry;
 import com.meng.mynetty.rpc.protocol.InvokerProtocol;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -16,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2020/12/5
  */
 public class RegistryHandler extends ChannelInboundHandlerAdapter {
+    private Logger logger = LoggerFactory.getLogger(RegistryHandler.class);
     /**
      * 保存所有可用的服务
      */
@@ -34,18 +37,21 @@ public class RegistryHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        System.out.println(Thread.currentThread().getName());
         Object result = new Object();
-        InvokerProtocol request = (InvokerProtocol)msg;
+        InvokerProtocol request = (InvokerProtocol) msg;
 
         //当客户端建立连接时，需要从自定义协议中获取信息，拿到具体的服务和实参
         //使用反射调用
-        if(registryMap.containsKey(request.getClassName())){
+        if (registryMap.containsKey(request.getClassName())) {
             Object clazz = registryMap.get(request.getClassName());
-            Method method = clazz.getClass().getMethod(request.getMethodName(),request.getParams());
-            result = method.invoke(clazz,request.getValues());
+            Method method = clazz.getClass().getMethod(request.getMethodName(), request.getParams());
+            result = method.invoke(clazz, request.getValues());
         }
         ctx.writeAndFlush(result);
-        ctx.close();
+
+        //传递到下一个handler
+        ctx.fireChannelRead(msg);
     }
 
     @Override
