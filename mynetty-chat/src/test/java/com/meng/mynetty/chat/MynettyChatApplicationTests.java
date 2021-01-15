@@ -1,10 +1,10 @@
-package com.meng.mynetty;
+package com.meng.mynetty.chat;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MynettyApplicationTests {
+class MynettyChatApplicationTests {
 
     @Test
     void contextLoads() {
